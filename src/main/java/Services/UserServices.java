@@ -10,8 +10,8 @@ import java.util.logging.Logger;
 
 public class UserServices {
 
-    public List<User> listaEstudiantes() {
-        List<User> lista = new ArrayList<>();
+    public List<User> UserList() {
+        List<User> list = new ArrayList<>();
         Connection con = null; //objeto conexion.
         try {
 
@@ -28,7 +28,7 @@ public class UserServices {
                 user.setAdministrator(rs.getBoolean("administrator"));
                 user.setAuthor(rs.getBoolean("author"));
 
-                lista.add(user);
+                list.add(user);
             }
 
         } catch (SQLException ex) {
@@ -41,35 +41,35 @@ public class UserServices {
             }
         }
 
-        return lista;
+        return list;
     }
 
     /**
      *
-     * @param matricula
+     * @param username
      * @return
      */
-    /*
-    public User getEstudiante(int matricula) {
+
+    public User getUser(String username) {
         User user = null;
         Connection con = null;
         try {
             //utilizando los comodines (?)...
-            String query = "select * from estudiante where matricula = ?";
+            String query = "select * from users where username = ?";
             con = DatabaseService.getInstancia().getConexion();
             //
             PreparedStatement prepareStatement = con.prepareStatement(query);
             //Antes de ejecutar seteo los parametros.
-            prepareStatement.setInt(1, matricula);
+            prepareStatement.setString(1, username);
             //Ejecuto...
             ResultSet rs = prepareStatement.executeQuery();
             while(rs.next()){
                 user = new User();
-                user.setMatricula(rs.getInt("matricula"));
+                user.setUsername(rs.getString("username"));
                 user.setNombre(rs.getString("nombre"));
-                user.setApellido(rs.getString("apellido"));
-                user.setCarrera(rs.getString("carrera"));
-                user.setTelefono(rs.getString("telefono"));
+                user.setPassword(rs.getString("password"));
+                user.setAdministrator(rs.getBoolean("administrator"));
+                user.setAuthor(rs.getBoolean("author"));
 
             }
 
@@ -83,25 +83,25 @@ public class UserServices {
             }
         }
 
-        return est;
+        return user;
     }
 
-    public boolean crearEstudiante(User user){
+    public boolean CreateUser(User user){
         boolean ok =false;
 
         Connection con = null;
         try {
 
-            String query = "insert into estudiante(matricula, nombre, apellido, telefono, carrera) values(?,?,?,?,?)";
+            String query = "insert into users(username, nombre, password, administrador, author) values(?,?,?,?,?)";
             con = DatabaseService.getInstancia().getConexion();
             //
             PreparedStatement prepareStatement = con.prepareStatement(query);
             //Antes de ejecutar seteo los parametros.
-            prepareStatement.setInt(1, user.getMatricula());
+            prepareStatement.setString(1, user.getUsername());
             prepareStatement.setString(2, user.getNombre());
-            prepareStatement.setString(3, user.getApellido());
-            prepareStatement.setString(4, user.getTelefono());
-            prepareStatement.setString(5, user.getCarrera());
+            prepareStatement.setString(3, user.getPassword());
+            prepareStatement.setBoolean(4, user.isAdministrator());
+            prepareStatement.setBoolean(5, user.isAuthor());
             //
             int fila = prepareStatement.executeUpdate();
             ok = fila > 0 ;
@@ -119,23 +119,24 @@ public class UserServices {
         return ok;
     }
 
-    public boolean actualizarEstudiante(User user){
+    public boolean UpdateUser(User user){
         boolean ok =false;
 
         Connection con = null;
         try {
 
-            String query = "update estudiante set nombre=?, apellido=?, carrera=?, telefono=? where matricula = ?";
+            String query = "update users set username=?, nombre=?, password=?, Administrator=?, author=? where username = ?";
             con = DatabaseService.getInstancia().getConexion();
             //
             PreparedStatement prepareStatement = con.prepareStatement(query);
             //Antes de ejecutar seteo los parametros.
+
             prepareStatement.setString(1, user.getNombre());
-            prepareStatement.setString(2, user.getApellido());
-            prepareStatement.setString(4, user.getTelefono());
-            prepareStatement.setString(3, user.getCarrera());
+            prepareStatement.setString(2, user.getPassword());
+            prepareStatement.setBoolean(3, user.isAdministrator());
+            prepareStatement.setBoolean(4, user.isAuthor());
             //Indica el where...
-            prepareStatement.setInt(5, user.getMatricula());
+            prepareStatement.setString(5, user.getUsername());
             //
             int fila = prepareStatement.executeUpdate();
             ok = fila > 0 ;
@@ -153,19 +154,19 @@ public class UserServices {
         return ok;
     }
 
-    public boolean borrarEstudiante(int matricula){
+    public boolean DeleteUser(String username){
         boolean ok =false;
 
         Connection con = null;
         try {
 
-            String query = "delete from estudiante where matricula = ?";
+            String query = "delete from users where username = ?";
             con = DatabaseService.getInstancia().getConexion();
             //
             PreparedStatement prepareStatement = con.prepareStatement(query);
 
             //Indica el where...
-            prepareStatement.setInt(1, matricula);
+            prepareStatement.setString(1, username);
             //
             int fila = prepareStatement.executeUpdate();
             ok = fila > 0 ;
@@ -181,6 +182,6 @@ public class UserServices {
         }
 
         return ok;
-    } */
+    }
 
 }
