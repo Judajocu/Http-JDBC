@@ -28,8 +28,8 @@ public class BootstrapService {
      * Metodo para recrear las tablas necesarios
      * @throws SQLException
      */
-    public static void crearTablas() throws  SQLException{
-        String sql = "CREATE TABLE IF NOT EXISTS USERS\n" +
+    public static void CreateTable() throws  SQLException{
+        String sqlUser = "CREATE TABLE IF NOT EXISTS USERS\n" +
                 "(\n" +
                 "  USERNAME VARCHAR(100) PRIMARY KEY NOT NULL,\n" +
                 "  NOMBRE VARCHAR(100) NOT NULL,\n" +
@@ -37,9 +37,32 @@ public class BootstrapService {
                 "  ADMINISTRATOR INTEGER NOT NULL,\n" +
                 "  AUTHOR INTEGER NOT NULL\n" +
                 ");";
+        String sqlProduct = "CREATE TABLE IF NOT EXISTS PRODUCTS\n" +
+                "(\n" +
+                "  ID INTEGER PRIMARY KEY NOT NULL,\n" +
+                "  TITLE VARCHAR(100) NOT NULL,\n" +
+                "  BODY VARCHAR(1000) NOT NULL,\n" +
+                "  AUTHOR VARCHAR(100) FOREIGN KEY NOT NULL,\n" +
+                "  DATEP CURRENT_DATE NOT NULL\n" +
+                ");";
+        String sqlTag = "CREATE TABLE IF NOT EXISTS TAGS\n" +
+                "(\n" +
+                "  ID INTEGER PRIMARY KEY NOT NULL,\n" +
+                "  RING VARCHAR(100) NOT NULL,\n" +
+                ");";
+        String sqlComment = "CREATE TABLE IF NOT EXISTS COMMENTS\n" +
+                "(\n" +
+                "  ID INTEGER PRIMARY KEY NOT NULL,\n" +
+                "  COMMENT VARCHAR(10000) NOT NULL,\n" +
+                "  USERNAME VARCHAR(100) FOREIGN KEY NOT NULL,\n" +
+                "  PRODUCT INTEGER FOREIGN KEY NOT NULL,\n" +
+                ");";
         Connection con = DatabaseService.getInstancia().getConexion();
         Statement statement = con.createStatement();
-        statement.execute(sql);
+        statement.execute(sqlUser);
+        statement.execute(sqlProduct);
+        statement.execute(sqlTag);
+        statement.execute(sqlComment);
         statement.close();
         con.close();
     }
