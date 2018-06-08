@@ -22,6 +22,9 @@ public class Product {
         this.tags = tags;
     }
 
+    public Product() {
+    }
+
     public long getId() {
         return id;
     }
