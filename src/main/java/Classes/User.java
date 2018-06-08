@@ -16,6 +16,9 @@ public class User {
         Author = author;
     }
 
+    public User() {
+    }
+
     public String getUsername() {
         return Username;
     }
