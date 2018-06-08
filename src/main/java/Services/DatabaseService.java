@@ -9,7 +9,7 @@ import java.util.logging.Logger;
 public class DatabaseService {
 
     private static DatabaseService instancia;
-    private String URL = "jdbc:h2:tcp://localhost/~/pruebaTep"; //Modo Server...
+    private String URL = "jdbc:h2:tcp://localhost/~/JDBC"; //Modo Server...
 
     /**
      *Implementando el patron Singleton
