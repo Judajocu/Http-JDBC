@@ -14,6 +14,9 @@ public class Comment {
         this.product = product;
     }
 
+    public Comment() {
+    }
+
     public long getId() {
         return id;
     }
